@@ -4,8 +4,8 @@ BetterTeams is a client mod for Teams.
 
 ## Installation
 
-See [installation.md](https://github.com/babeuh/BetterTeams/blob/main/INSTALLATION.md)
+See [installation](https://github.com/babeuh/BetterTeams/wiki/Installation)
 
-## Is this allowed?
+## Will you get banned?
 
-I really don't know.
+I don't know.
