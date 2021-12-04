@@ -1,0 +1,74 @@
+.betterteams-mod-box {
+  /*width: 500px;*/
+  height: 90px;
+  border-radius: 15px;
+  position: relative;
+  margin-bottom: 20px;
+
+  background-color: #424242;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.10);
+}
+
+.betterteams-mod-name {
+  width: 165px;
+  height: 25px;
+  left: 10px;
+  top: 24px;
+  position: absolute;
+
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.betterteams-mod-author {
+  width: 139px;
+  height: 23px;
+  left: 10px;
+  top: 56px;
+  position: absolute;
+
+  color: #9ea2ff;
+  font-size: 16px;
+}
+
+.betterteams-mod-status {
+  width: 10px;
+  height: 10px;
+  left: 10px;
+  top: 9px;
+  position: absolute;
+
+  cursor: pointer;
+
+  border-radius: 500px;
+}
+
+.betterteams-mod-status.betterteams-mod-enabled {
+  background-color: #096d00;
+}
+
+.betterteams-mod-status.betterteams-mod-disabled {
+  background-color: #c4c4c4;
+}
+
+.betterteams-mod-description {
+  width: 310px;
+  height: 51px;
+  left: 180px;
+  top: 28px;
+  position: absolute;
+
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.betterteams-mod-url {
+  width: 448px;
+  height: 11px;
+  left: 32px;
+  top: 6px;
+  position: absolute;
+
+  color: #9ea2ff;
+  font-size: 11px;
+}

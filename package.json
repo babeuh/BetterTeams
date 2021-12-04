@@ -1,0 +1,26 @@
+{
+  "name": "betterteams",
+  "version": "1.0.0",
+  "description": "A mod that enhances Teams",
+  "private": "true",
+  "repository": "https://github.com/babeuh/BetterTeams",
+  "author": "babeuh",
+  "license": "GPL-3.0",
+  "scripts": {
+    "inject": "node ./installer inject",
+    "uninject": "node ./installer uninject",
+    "commit": "cz"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "3.3.0"
+  },
+  "dependencies": {
+    "sass": "^1.44.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
