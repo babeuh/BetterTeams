@@ -44,28 +44,7 @@ electron.app.once("ready", () => {
   );
 });
 
-console.log("BetterTeams: Blocking certain urls");
-const blockList = [];
-electron.app.on("ready", function () {
-  electron.session.defaultSession.webRequest.onBeforeSendHeaders(
-    (details, callback) => {
-      if (blockList.includes(details.url)) {
-        console.log(`BetterTeams: Blocked url ${details.url}`);
-        callback({
-          cancel: true,
-        });
-      } else {
-        callback({
-          cancel: false,
-          requestHeaders: details.requestHeaders,
-        });
-      }
-    }
-  );
-});
-
 console.log("BetterTeams: Overwriting electron name and path");
-// @ts-ignore: setAppPath exists
 electron.app.setAppPath(teamsPath);
 electron.app.setName(teamsPackage.name);
 
