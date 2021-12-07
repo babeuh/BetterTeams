@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { join } = require("path");
 const { spawnSync } = require("child_process");
+const { getId } = require("./id");
 
 class Theme {
   constructor(params) {
@@ -21,12 +22,12 @@ class Theme {
 
   enable() {
     document.head.appendChild(this.element);
-    this.isEnabled = true;
+    this.enabled = true;
   }
 
   disable() {
     document.head.removeChild(this.element);
-    this.isEnabled = false;
+    this.enabled = false;
   }
 
   update(data, version) {
@@ -40,14 +41,15 @@ module.exports = class ThemeManager {
   constructor(opts) {
     this.dataFolderPath = opts.dataFolderPath;
     this.themesFolderPath = join(this.dataFolderPath, "themes");
-    this.enabledFilePath = join(this.dataFolderPath, "enabled.json");
+    this.enabledFileManager = opts.enabledFileManager;
     this.themes = new Map();
+
     this.reloadThemes();
   }
 
   reloadThemes() {
     for (const [_, theme] of this.themes.entries()) {
-      if (theme.isEnabled) theme.disable();
+      if (theme.enabled) theme.disable();
     }
     this.themes.clear();
     let themeFolders = fs.readdirSync(this.themesFolderPath);
@@ -67,7 +69,7 @@ module.exports = class ThemeManager {
       } else {
         data = fs.readFileSync(mainFilePath).toString();
       }
-      const id = `theme@${manifest.author}/${manifest.name}`;
+      const id = getId("theme", manifest.author, manifest.name);
       const theme = new Theme({
         name: manifest.name,
         author: manifest.author,
@@ -84,10 +86,12 @@ module.exports = class ThemeManager {
       });
       this.themes.set(id, theme);
     }
-    const enabledThemes = global.efm.enabled.themes;
+    const enabledThemes = this.enabledFileManager.enabled.themes;
     for (let i = 0; i < enabledThemes.length; i++) {
       if (this.themes.has(enabledThemes[i])) {
-        this.themes.get(enabledThemes[i]).enable();
+        const theme = this.themes.get(enabledThemes[i]);
+        theme.enabled = true;
+        theme.enable();
       } else {
         this.updateEnabledFile(enabledThemes[i], false);
       }
@@ -97,7 +101,7 @@ module.exports = class ThemeManager {
   enableTheme(themeId) {
     if (!this.themes.has(themeId)) throw new Error(`${themeId} not found`);
     const theme = this.themes.get(themeId);
-    if (theme.isEnabled) throw new Error(`${themeId} is already enabled`);
+    if (theme.enabled) throw new Error(`${themeId} is already enabled`);
     if (theme.info.type === "sass_dev" || theme.info.type === "dev") {
       this.reloadTheme(themeId, theme.version);
     }
@@ -108,7 +112,7 @@ module.exports = class ThemeManager {
   disableTheme(themeId) {
     if (!this.themes.has(themeId)) throw new Error(`${themeId} not found`);
     const theme = this.themes.get(themeId);
-    if (!theme.isEnabled) throw new Error(`${themeId} is already disabled`);
+    if (!theme.enabled) throw new Error(`${themeId} is already disabled`);
     theme.disable();
     this.updateEnabledFile(themeId, false);
   }
@@ -118,7 +122,7 @@ module.exports = class ThemeManager {
     const theme = this.themes.get(themeId);
 
     let wasEnabled = false;
-    if (theme.isEnabled) {
+    if (theme.enabled) {
       theme.disable();
       wasEnabled = true;
     }
@@ -142,18 +146,18 @@ module.exports = class ThemeManager {
 
   getThemeStatus(themeId) {
     if (!this.themes.has(themeId)) throw new Error(`${themeId} not found`);
-    return this.themes.get(themeId).isEnabled;
+    return this.themes.get(themeId).enabled;
   }
 
   updateEnabledFile = (themeId, add) => {
-    let enabled = global.efm.enabled;
+    let enabled = this.enabledFileManager.enabled;
     if (add) {
       if (enabled.themes.includes(themeId)) return;
       enabled.themes.push(themeId);
     } else {
       enabled.themes = enabled.themes.filter((e) => e !== themeId);
     }
-    global.efm.updateEnabledFile(enabled);
+    this.enabledFileManager.updateEnabledFile(enabled);
   };
 
   handleSassTheme(themeFolderPath, mainFilePath, manifestVersion, isDev) {

@@ -1,0 +1,8 @@
+{
+  "name": "betterteams-settings",
+  "author": "babeuh",
+  "version": "1.0.0",
+  "description": "Settings for betterteams",
+  "url": "https://github.com/babeuh/betterteams",
+  "mainFile": "main.js"
+}

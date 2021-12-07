@@ -5,7 +5,10 @@ module.exports = class EnabledFileManager {
   constructor(opts) {
     this.dataFolderPath = opts.dataFolderPath;
     this.enabledFilePath = join(this.dataFolderPath, "enabled.json");
-    this.enabled = {};
+    this.enabled = {
+      themes: [],
+      plugins: ["plugin@babeuh/betterteams-settings"],
+    };
     this.checkEnabledFile();
   }
 

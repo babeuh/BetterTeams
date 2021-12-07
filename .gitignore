@@ -1,6 +1,8 @@
 node_modules
-yarn.lock
-build
+
 data/themes/**/*
 data/plugins/**/*
+
 !.gitkeep
+!data/plugins/betterteams-settings
+!data/plugins/betterteams-settings/*
